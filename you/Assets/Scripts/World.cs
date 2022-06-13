@@ -4,16 +4,10 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
-    
-    
-    void Start()
+
+    public void Conseguiu() 
     {
-        
+        Debug.Log("Conseguiu!");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
