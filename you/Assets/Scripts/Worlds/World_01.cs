@@ -21,7 +21,7 @@ public class World_01 : MonoBehaviour
     {
         if(collider.name == "cl_bedroom_door_out")
        {
-            transform.position = new Vector3 (59,135,0);
+            transform.position = new Vector3 (53,135,0);
        } else if(collider.name =="cl_bedroom_door_in") 
        {
             transform.position = new Vector3 (58,3,0);
