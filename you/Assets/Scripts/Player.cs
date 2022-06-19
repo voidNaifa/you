@@ -5,15 +5,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    //[SerializeField]
     public Rigidbody2D player;
-
-    //[SerializeField]
     public float movimentSpeed;
     public Animator anim;
-
-
-    // Update is called once per frame
     void Update()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -28,11 +22,21 @@ public class Player : MonoBehaviour
         anim.SetFloat("Speed", movement.magnitude); 
         
         this.player.velocity = movement * movimentSpeed;
-
-    
     }
 
-    /*void ManagerCollision(GameObject colision)
+
+
+
+
+    /*        if(collider.CompareTag("Door"))
+        {
+            if (door ==1)
+            {
+                transform.position = new Vector3 (59,135,0);
+            }
+        } 
+
+    void ManagerCollision(GameObject colision)
     {
         if(colision.CompareTag("Door"))
         {
