@@ -13,6 +13,7 @@ public class World_01 : MonoBehaviour
 
     void Start()
     {
+        Cursor.visible = false;
         transform.position = new Vector3 (-60,-78,0);
     }
 
