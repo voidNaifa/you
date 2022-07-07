@@ -22,6 +22,11 @@ public class Menu : MonoBehaviour
         {
             PauseGame();
         }
+        if(isPaused)
+        {
+            Time.timeScale = 0f;
+            player.GetComponent<Player>().Game_False();
+        }
     }
 
     public void PauseGame()
@@ -38,10 +43,10 @@ public class Menu : MonoBehaviour
             {
                 pauseMenu.SetActive(true);
                 isPaused = true;
-                Time.timeScale = 0f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 player.GetComponent<Player>().Game_False();
+                Time.timeScale = 0f;                
             }
     }
 

@@ -25,13 +25,17 @@ public class Fade : MonoBehaviour
     public void FadeAll()
     {
         Time.timeScale = 0f;
-       // player.GetComponent<Player>().Game_False();
+        world.GetComponent<Player>().Game_False();
     } 
 
     public void Fade_0()
     {
-        fade.Play("Fade_0");
-        Time.timeScale = 1f;        
-        // player.GetComponent<Player>().Game_True();
+        fade.Play("Fade_0");     
+        Time.timeScale = 1f;  
+        //Invoke("True", 0.001f);      
+    }
+    void True()
+    {
+        world.GetComponent<Player>().Game_True();           
     }
 }
