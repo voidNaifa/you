@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -10,7 +11,8 @@ public class Menu : MonoBehaviour
     [Header("Volume Settings")]
     [SerializeField] private TMP_Text volumeValue = null; 
     [SerializeField] private Slider volumeSlider = null;
-    [SerializeField] private float defaultVolume  = 100f;
+    [SerializeField] private float defaultVolume  = 0f;
+    [SerializeField] private AudioMixer audioMixer;
     [Header("Levels To Load")]
     public string _newGameLevel;
     private string levelToLoad;
@@ -28,8 +30,114 @@ public class Menu : MonoBehaviour
     [SerializeField] private TMP_Dropdown qualityDropdown;
     [SerializeField] private Toggle fullScreenToggle;
     
+    public Animator animPlayer;
+    int idle;    
+    private void Start() 
+    {   
 
-    private int _qualityLevel;
+        //animPlayer.Play("player_idle_down");
+
+        Cursor.visible = true;        
+        resolutions = Screen.resolutions;
+        resolutionDropdown.ClearOptions();    
+
+        List<string> options = new List<string>();
+
+        int currentResolutionIndex = 0;
+
+        for (int i = 0; i< resolutions.Length; i++)
+        {
+            string option = resolutions[i].width + " x " + resolutions[i].height;
+            options.Add(option);
+
+            if(resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+            {
+                currentResolutionIndex = i;
+            }
+        }
+
+        resolutionDropdown.AddOptions(options);
+        resolutionDropdown.value = currentResolutionIndex;
+        resolutionDropdown.RefreshShownValue();        
+    }
+
+
+    public void SetQuality(int qualityIndex)
+    {
+        QualitySettings.SetQualityLevel(qualityIndex);
+    }
+
+    public void SetResolution(int resolutionIndex)
+    {
+        Resolution resolution = resolutions[resolutionIndex];
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+    }
+    public void SetFullScreen (bool isFullScreen)
+    {
+        Screen.fullScreen = isFullScreen;
+    }
+    public void SetVolume(float volume)
+    {
+        audioMixer.SetFloat("volume", volume);
+        volumeValue.text = volume.ToString("0");
+    }
+
+        public void NewGameDialogYes()
+    {
+        Cursor.visible = false;        
+        SceneManager.LoadScene(_newGameLevel);
+    }
+
+    public void QuitButton()
+    {
+        Application.Quit();
+    }
+
+    public void MenuAnim()
+    {
+        animPlayer.Play("player_idle_down_menu");
+    }
+    public void OptionsAnim()
+    {
+        animPlayer.Play("player_walk_down_menu");
+    }
+    public void GraphicsAnim()
+    {
+        animPlayer.Play("player_rotation_menu");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+
+    //private int _qualityLevel;
     private bool _isFullScreen;
     private float _brightnessLevel;
 
@@ -92,10 +200,6 @@ public class Menu : MonoBehaviour
             levelToLoad = PlayerPrefs.GetString("SavedLevel");
             SceneManager.LoadScene(levelToLoad);
         }
-        else
-        {
-
-        }
     }
 
     public void QuitButton()
@@ -106,7 +210,8 @@ public class Menu : MonoBehaviour
 
     public void SetVolume(float volume)
     {
-        AudioListener.volume = volume;
+        //AudioListener.volume = volume;
+        audioMixer.SetFloat("volume", volume);
         volumeValue.text = volume.ToString("0");
     }
 
@@ -123,7 +228,7 @@ public class Menu : MonoBehaviour
             volumeValue.text = defaultVolume.ToString("00");
             VolumeApply();
         }
-        if (MenuType == "Graphics")
+        /*if (MenuType == "Graphics")
         {
             brightnessSlider.value = defaultBrightness;
             brightnessValue.text = defaultBrightness.ToString("0");
@@ -131,8 +236,8 @@ public class Menu : MonoBehaviour
             qualityDropdown.value = 1;
             QualitySettings.SetQualityLevel(1);
 
-            fullScreenToggle.isOn = false;
-            Screen.fullScreen = false;
+            fullScreenToggle.isOn = true;
+            Screen.fullScreen = true;
 
             Resolution currentResolution = Screen.currentResolution;
             Screen.SetResolution(currentResolution.width, currentResolution.height, Screen.fullScreen);
@@ -152,13 +257,14 @@ public class Menu : MonoBehaviour
         _isFullScreen = isFullScreen;
     }
 
-    public void SetQuality(int QualityIndex)
+    public void SetQuality(int qualityIndex)
     {
-        _qualityLevel = QualityIndex;
+        //_qualityLevel = qualityIndex;
+        QualitySettings.SetQualityLevel(qualityIndex);
 
     }
 
-    public void GraphicsApply()
+    /*public void GraphicsApply()
     {
         PlayerPrefs.SetFloat("masterBrightness", _brightnessLevel);
         PlayerPrefs.SetInt("masterQuality", +_qualityLevel);
@@ -170,6 +276,7 @@ public class Menu : MonoBehaviour
         //StartCoroutine(ConfirmationBox());
 
     }
+    */
 
 }
 

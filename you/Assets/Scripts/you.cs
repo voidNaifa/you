@@ -8,16 +8,25 @@ public class you : MonoBehaviour
 {
 
     public string world;
-    float timer = 0f;
+    public Animator youAnim;
+    //float timer = 0f;
     void Start()
     {
-        Cursor.visible = false;
+        Cursor.visible = false;        
+        youAnim.Play("you");
+
     }
-    void Update()
+    /*void Update()
     {
         timer += 1 * Time.deltaTime;
         if ( timer >= 3) {
             SceneManager.LoadScene (world);
         }
+    }
+    */
+
+    public void Begin()
+    {   
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

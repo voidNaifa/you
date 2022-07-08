@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 public class LoadPrefs : MonoBehaviour
-{
+{   
+    /*
     [Header("General Settings")]
     [SerializeField] private bool canUse = false;
     [SerializeField] private Menu menuController;
@@ -70,5 +71,6 @@ public class LoadPrefs : MonoBehaviour
             }
         }
     }
+    */
 
 }
