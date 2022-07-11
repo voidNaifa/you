@@ -12,7 +12,8 @@ public class you : MonoBehaviour
     //float timer = 0f;
     void Start()
     {
-        Cursor.visible = false;        
+        Cursor.visible = false;     
+        Cursor.lockState = CursorLockMode.Locked;   
         youAnim.Play("you");
 
     }

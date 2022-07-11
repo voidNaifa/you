@@ -151,7 +151,7 @@ QualitySettings:
     customRenderPipeline: {fileID: 0}
     excludedTargetPlatforms: []
   m_PerPlatformDefaultQuality:
-    Android: 1
+    Android: 3
     CloudRendering: 3
     EmbeddedLinux: 3
     GameCoreScarlett: 3

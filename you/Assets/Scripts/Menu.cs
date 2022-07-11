@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -29,15 +30,37 @@ public class Menu : MonoBehaviour
     [Space(10)]
     [SerializeField] private TMP_Dropdown qualityDropdown;
     [SerializeField] private Toggle fullScreenToggle;
+    [Header("Menus")]
+    //[Space (10)]
+    //[Header("MainMenu")]
+    [SerializeField] private GameObject mainMenu; 
+    [SerializeField] private GameObject newGameMenu;     
+    [SerializeField] private GameObject optionsMenu;            
+    [SerializeField] private GameObject graphicsMenu;
+    [SerializeField] private GameObject soundMenu;  
+    [SerializeField] private GameObject playerMenu;        
     
+    [Header("Buttons")]
+    [SerializeField] private GameObject menuButton;
+    [SerializeField] private GameObject newGameButton;        
+    [SerializeField] private GameObject optionsButton;
+    [SerializeField] private GameObject graphicsButton;    
+    [SerializeField] private GameObject soundButton;
+    [SerializeField] private GameObject inGraphicsButton;
+    [SerializeField] private GameObject inSoundButton;
+
+    private string MenuID;
     public Animator animPlayer;
     int idle;    
     private void Start() 
     {   
 
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(menuButton);
         //animPlayer.Play("player_idle_down");
 
-        Cursor.visible = true;        
+        Cursor.visible = false;   
+        Cursor.lockState = CursorLockMode.Locked;     
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();    
 
@@ -47,7 +70,7 @@ public class Menu : MonoBehaviour
 
         for (int i = 0; i< resolutions.Length; i++)
         {
-            string option = resolutions[i].width + " x " + resolutions[i].height;
+            string option = resolutions[i].width + " x " + resolutions[i].height + " @ " + resolutions[i].refreshRate + "hz";;
             options.Add(option);
 
             if(resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
@@ -61,6 +84,13 @@ public class Menu : MonoBehaviour
         resolutionDropdown.RefreshShownValue();        
     }
 
+    void Update()
+    {
+        if(Input.GetButtonDown("Cancel"))
+        {
+            BackButton();
+        }       
+    }
 
     public void SetQuality(int qualityIndex)
     {
@@ -81,7 +111,7 @@ public class Menu : MonoBehaviour
         audioMixer.SetFloat("volume", volume);
         volumeValue.text = volume.ToString("0");
     }
-
+    
         public void NewGameDialogYes()
     {
         Cursor.visible = false;        
@@ -108,29 +138,103 @@ public class Menu : MonoBehaviour
 
 
 
+/////////////////////   BUTTONS   //////////////////////////////////////
+
+
+    public void StartButton()
+    {
+        MenuID = "gameDialog";
+        mainMenu.SetActive(false);
+        newGameMenu.SetActive(true);
+        playerMenu.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(newGameButton);                
+    }
+    public void OptionsButton()
+    {   
+        MenuID = "OptionsMenu";
+        mainMenu.SetActive(false);
+        optionsMenu.SetActive(true);
+        OptionsAnim();
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(graphicsButton);            
+
+    }
+
+    public void GraphicsButton()
+    {
+        MenuID = "GraphicsMenu";
+        optionsMenu.SetActive(false);
+        graphicsMenu.SetActive(true);
+        GraphicsAnim();
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(inGraphicsButton);
+    }
+
+    public void SoundButton()
+    {
+        MenuID = "SoundMenu";
+        optionsMenu.SetActive(false);
+        soundMenu.SetActive(true);
+        MenuAnim();
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(inSoundButton);          
+
+    }
+
+
+    public void ReturnToMenu()
+    {   
+        mainMenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+
+        if(MenuID == "gameDialog")
+        {
+            playerMenu.SetActive(true);            
+            newGameMenu.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(menuButton);              
+        }
+        if(MenuID == "OptionsMenu")
+        {
+            optionsMenu.SetActive(false);
+            MenuAnim();
+            EventSystem.current.SetSelectedGameObject(optionsButton);     
+        }
+        MenuID = "mainMenu";      
+    }
+
+    public void ReturnToOptions()
+    {   
+        optionsMenu.SetActive(true);
+        OptionsAnim();
+        EventSystem.current.SetSelectedGameObject(null);        
+        if(MenuID == "GraphicsMenu")
+        {
+            graphicsMenu.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(graphicsButton); 
+        }
+        if(MenuID == "SoundMenu")
+        {
+            soundMenu.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(soundButton);   
+        }
+        MenuID = "OptionsMenu";
+    }
 
 
 
+    public void BackButton()
+    {
+        if(MenuID == "gameDialog" || MenuID == "OptionsMenu")
+        {
+            ReturnToMenu();
+        }
+        if(MenuID == "GraphicsMenu" || MenuID == "SoundMenu")
+        {
+            ReturnToOptions();
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 
 
