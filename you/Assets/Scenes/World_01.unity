@@ -1895,7 +1895,7 @@ GameObject:
   - component: {fileID: 460063897}
   - component: {fileID: 460063896}
   m_Layer: 5
-  m_Name: Dialog
+  m_Name: DialogPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5274,11 +5274,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questionPanel: {fileID: 1665022190}
+  dialoguePanel: {fileID: 460063894}
+  clockObj: {fileID: 1439343738}
   questionText_1: {fileID: 154132717}
   questionText_2: {fileID: 1178668742}
   buttom_1: {fileID: 154132714}
   buttom_2: {fileID: 1178668739}
   inQuestion: 0
+  questionStarted: 0
   clock: {fileID: 613373501}
 --- !u!1 &1601200123
 GameObject:

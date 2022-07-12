@@ -8,17 +8,28 @@ public class Interaction : MonoBehaviour
 {
     
     private bool playerInRange;
-    [SerializeField] private GameObject questionPanel;
+    [SerializeField] private GameObject questionPanel, dialoguePanel;
+    [SerializeField] private GameObject clockObj;
     [SerializeField] private TMP_Text questionText_1, questionText_2;
     [SerializeField] private GameObject buttom_1, buttom_2;   
     private string question;
     public bool inQuestion;
-    bool repeat;
+    public bool questionStarted;
+
+    private Player player;
+    private Dialogue dialogue;
+    //bool repeat;
+
+    bool clockTurn = true;
     [SerializeField] private Animator clock;
 
+    void Start()
+    {   
+        dialogue = FindObjectOfType<Dialogue>();
+        player = FindObjectOfType<Player>();
+    }
 
-
-    void Update()
+    /*void Update()
     {
         if(playerInRange == true && Input.GetButtonDown("Fire1")) 
         {   
@@ -32,6 +43,7 @@ public class Interaction : MonoBehaviour
             }
         }        
     }
+    */
     
    
     public void OnTriggerEnter2D(Collider2D collider)
@@ -40,52 +52,95 @@ public class Interaction : MonoBehaviour
         // World_01 //
         if(collider.name =="dg_bedroom_clock")
         {   
-            Debug.Log("Estou");
-            playerInRange = true;
             question = "Clock";
-
+            inQuestion = true;
+            Debug.Log("Entrou numa pergunta");
+        }
+        else
+        {
+            question = "";
+            inQuestion = false;            
         }
 
 
     }
     public void OnTriggerExit2D(Collider2D collider)
     {
-        playerInRange = false;
         question = "";
+        inQuestion = false;
     }
 
-    void Question()
-    {
-     
+    public void Question()
+    {   
         if(question == "Clock")
         {
+            questionStarted = true;         
+        }
+        else 
+        {
+            inQuestion = false;
+            questionStarted = false;
+        }
+    }
+
+    public void Questions()
+    {
+        if(question == "Clock")
+        {   
+
+            questionStarted = true;
             questionPanel.SetActive(true);
-            inQuestion = true;   
             questionText_1.text = "Sim";
             questionText_2.text = "Não";
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(buttom_1);  
-        }
+            dialogue.onQuestion();    
+        }     
     }
 
     public void Answer_1()
     {   
-        inQuestion = false;
         if(question == "Clock")
-        {   
+        {      
+
             //question = "";
             Debug.Log("Feito");
             clock.Play("clock_off");
             questionPanel.SetActive(false);
+            //dialoguePanel.SetActive(false);            
             //inQuestion = false;
-            repeat = true;
+            Invoke("EndQuestion", 0.1f);
+            dialogue.NotDialogue();
+            //Time.timeScale = 1f;
+            //clockTurn = false;
+            clockObj.SetActive(false);
+
         }
     }
     public void Answer_2()
     {   
         //question = "";
         questionPanel.SetActive(false);
+        //dialoguePanel.SetActive(false);        
         //inQuestion = false;
-        repeat = true;
+        //Time.timeScale = 1f;
+        dialogue.NotDialogue();
+        Invoke("EndQuestion", 0.1f);
+        //dialoguePanel.GetComponent<Dialogue>().NotDialogue(); 
+
     }
-}
+
+    private void EndQuestion()
+    {
+        questionStarted = false; 
+    }
+/*     void NotDialogue()
+    {
+        dialogue.NotDialogue();
+        //dialogStarted = false;
+        dialoguePanel.SetActive(false);
+        player.Game_True();
+        Time.timeScale = 1f;
+    }
+    */
+} 
