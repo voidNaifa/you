@@ -10,24 +10,19 @@ using TMPro;
 public class Menu : MonoBehaviour
 {
     [Header("Volume Settings")]
-    [SerializeField] private TMP_Text volumeValue = null; 
-    [SerializeField] private Slider volumeSlider = null;
-    [SerializeField] private float defaultVolume  = 0f;
+    [SerializeField] private TMP_Text volumeValue; 
+    [SerializeField] private Slider volumeMainSlider;
+    //[SerializeField] private float defaultVolume  = 80f;
     [SerializeField] private AudioMixer audioMixer;
+    float volumeFixer = 80f;
+   
     [Header("Levels To Load")]
     public string _newGameLevel;
-    private string levelToLoad;
+    //private string levelToLoad;
 
-    [Header("Resolution Dropdowns")]
+    [Header("Quality Settings")]
     public TMP_Dropdown resolutionDropdown;
     private Resolution[] resolutions;
-
-    [Header("Graphics Settings")]
-    [SerializeField] private Slider brightnessSlider = null;
-    [SerializeField] private TMP_Text brightnessValue = null;
-    [SerializeField] private float defaultBrightness = 7;
-
-    [Space(10)]
     [SerializeField] private TMP_Dropdown qualityDropdown;
     [SerializeField] private Toggle fullScreenToggle;
     [Header("Menus")]
@@ -38,7 +33,8 @@ public class Menu : MonoBehaviour
     [SerializeField] private GameObject optionsMenu;            
     [SerializeField] private GameObject graphicsMenu;
     [SerializeField] private GameObject soundMenu;  
-    [SerializeField] private GameObject playerMenu;        
+    [SerializeField] private GameObject playerMenu;  
+    private string MenuID;          
     
     [Header("Buttons")]
     [SerializeField] private GameObject menuButton;
@@ -49,14 +45,25 @@ public class Menu : MonoBehaviour
     [SerializeField] private GameObject inGraphicsButton;
     [SerializeField] private GameObject inSoundButton;
 
-    private string MenuID;
+
     public Animator animPlayer;
-    int idle;    
+    public PlayerSettings playerPrefs;
     private void Start() 
     {   
-
+        playerPrefs = FindObjectOfType<PlayerSettings>();
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(menuButton);
+
+        //resolutionDropdown.value = PlayerPrefs.GetFloat("resolution");
+        
+
+
+
+
+
+
+
+
         //animPlayer.Play("player_idle_down");
 
         Cursor.visible = false;   
@@ -94,7 +101,10 @@ public class Menu : MonoBehaviour
 
     public void SetQuality(int qualityIndex)
     {
+
         QualitySettings.SetQualityLevel(qualityIndex);
+        playerPrefs.SavePrefs("Graphics");
+
     }
 
     public void SetResolution(int resolutionIndex)
@@ -109,7 +119,8 @@ public class Menu : MonoBehaviour
     public void SetVolume(float volume)
     {
         audioMixer.SetFloat("volume", volume);
-        volumeValue.text = volume.ToString("0");
+
+        volumeValue.text = (volume + volumeFixer).ToString("0");
     }
     
         public void NewGameDialogYes()
