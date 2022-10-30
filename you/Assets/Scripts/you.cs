@@ -6,16 +6,28 @@ using UnityEngine.SceneManagement;
 
 public class you : MonoBehaviour
 {
-    float timer = 0f;
+
+    public string world;
+    public Animator youAnim;
+    //float timer = 0f;
     void Start()
     {
-        Cursor.visible = false;
+        Cursor.visible = false;     
+        Cursor.lockState = CursorLockMode.Locked;   
+        youAnim.Play("you");
+
     }
-    void Update()
+    /*void Update()
     {
         timer += 1 * Time.deltaTime;
         if ( timer >= 3) {
-            SceneManager.LoadScene (1);
+            SceneManager.LoadScene (world);
         }
+    }
+    */
+
+    public void Begin()
+    {   
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

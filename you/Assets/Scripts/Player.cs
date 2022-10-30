@@ -98,7 +98,8 @@ public class Player : MonoBehaviour
         gameOn = true;
     }
     public void Game_False()
-    {
+    {   
+        Idle();
         gameOn = false;
 
     }

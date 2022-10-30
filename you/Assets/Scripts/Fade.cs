@@ -5,7 +5,8 @@ using UnityEngine;
 public class Fade : MonoBehaviour
 {
     public Animator fade;
-    public Rigidbody2D world;
+    [SerializeField] private GameObject world;
+    public GameObject player;
     //public bool gameOn = true;
     void Start()
     {
@@ -25,7 +26,7 @@ public class Fade : MonoBehaviour
     public void FadeAll()
     {
         Time.timeScale = 0f;
-        world.GetComponent<Player>().Game_False();
+        player.GetComponent<Player>().Game_False();
     } 
 
     public void Fade_0()
@@ -36,6 +37,6 @@ public class Fade : MonoBehaviour
     }
     void True()
     {
-        world.GetComponent<Player>().Game_True();           
+        player.GetComponent<Player>().Game_True();           
     }
 }
